@@ -1,17 +1,50 @@
 <app-header title= "Login"></app-header>
 <ion-content>
 
-    <form [formGroup]="form"
-    
-    
-    ></form>
+<div class="d-flex-center">
 
-    <app-custom-input 
-    autocomplete="email"
-    icon = "mail-outline"
-    [control]="form.controls.email"
-    type="email"
-    label="Correo"
-    ></app-custom-input>
-    <app-custom-input icon = "lock-closed-outline"></app-custom-input>
+
+    <form [formGroup]="form" class="auth-form" [ngSubmit]="submit()"(keypress.enter)="submit()">
+    
+        <app-custom-input 
+        autocomplete="email"
+        icon = "mail-outline"
+        [control]="form.controls.email"
+        type="email"
+        label="Correo"
+        ></app-custom-input>
+    
+        <div class="valitators" *ngIf="form.controls.email.errors && form.controls.email.touched">
+
+            <div *ngIf="form.controls.email.errors?.['required']"></div>
+            <div *ngIf="form.controls.email.errors?.['email']">Ingrese el Correo</div>
+
+        </div>
+        
+        <app-custom-input
+        [control]="form.controls.password"
+        icon = "lock-closed-outline"
+        type="password"
+        label="Contraseña"
+        ></app-custom-input>
+
+        <div class="valitators" *ngIf="form.controls.password.errors && form.controls.password.touched"></div>
+
+            <div *ngIf="form.controls.password.errors?.['required']">Ingrese la clave</div>
+            
+
+        </div>
+
+        <ion-button  expand="block" fill="clear" mode="ios" class="submit" type="submit" [disabled]="form.invalid">
+            Entrar
+        </ion-button>
+        
+        </form>
+    
+        
+
+</div>
+
+
+    
 </ion-content>
