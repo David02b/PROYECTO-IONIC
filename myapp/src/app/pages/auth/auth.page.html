@@ -1,50 +1,52 @@
-<app-header title= "Login"></app-header>
+<app-header title="Login"></app-header>
 <ion-content>
 
-<div class="d-flex-center">
+    <div class="d-flex-center">
 
 
-    <form [formGroup]="form" class="auth-form" (ngSubmit)="submit()"(keypress.enter)="submit()">
-    
-        <app-custom-input 
-        autocomplete="email"
-        icon = "mail-outline"
-        [control]="form.controls.Email"
-        type="email"
-        label="Correo"
-        ></app-custom-input>
-    
-        <div class="valitators" *ngIf="form.controls.Email.errors && form.controls.Email.touched">
+        <form [formGroup]="form" class="auth-form" (ngSubmit)="submit()" (keypress.enter)="submit()">
 
-            <div *ngIf="form.controls.Email.errors?.['required']"></div>
-            <div *ngIf="form.controls.Email.errors?.['email']">Ingrese el Correo</div>
+            <app-logo></app-logo>
 
-        </div>
-        
-        <app-custom-input
-        [control]="form.controls.Password"
-        icon = "lock-closed-outline"
-        type="password"
-        label="Contraseña"
-        ></app-custom-input>
+            <app-custom-input autocomplete="email" icon="mail-outline" [control]="form.controls.email" type="email"
+                label="Correo"></app-custom-input>
 
-        <div class="valitators" *ngIf="form.controls.Password.errors && form.controls.Password.touched">
+            <div class="valitators" *ngIf="form.controls.email.errors && form.controls.email.touched">
 
-            <div *ngIf="form.controls.Password.errors?.['required']">Ingrese la clave</div>
-            
+                <div *ngIf="form.controls.email.errors?.['required']"></div>
+                <div *ngIf="form.controls.email.errors?.['email']">Ingrese el Correo</div>
 
-        </div>
+            </div>
 
-        <ion-button  expand="block" fill="clear" mode="ios" class="submit" type="submit" [disabled]="form.invalid">
-            Entrar
-        </ion-button>
-        
-    </form>
-    
-        
+            <app-custom-input [control]="form.controls.password" icon="lock-closed-outline" type="password"
+                label="Contraseña"></app-custom-input>
 
-</div>
+            <div class="valitators" *ngIf="form.controls.password.errors && form.controls.password.touched">
+
+                <div *ngIf="form.controls.password.errors?.['required']">Ingrese la clave</div>
 
 
-    
+            </div>
+
+            <p routerLink="forgot-password" routerLinkActive="router-link-active"  class="ion-text-end">¿Olvidaste tu contraseña?</p>
+
+            <ion-button expand="block" mode="ios" class="submit" type="submit" [disabled]="form.invalid">
+                Entrar
+                <ion-icon slot="end" name="log-in-outline"></ion-icon>
+            </ion-button>
+
+            <ion-button class="ion-margin-top" routerLink="sign-up" routerLinkActive="router-link-active"  expand="block" mode="ios" fill="outline">
+                Registar
+                <ion-icon slot="end" name="person-add-outline"></ion-icon>
+            </ion-button>
+
+
+        </form>
+
+
+
+    </div>
+
+
+
 </ion-content>
