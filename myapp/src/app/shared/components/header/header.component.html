@@ -3,6 +3,10 @@
     
     <ion-title color="danger">
 
+      <ion-buttons slot="start">
+        <ion-back-button *ngIf="backButton" (defaultHref)="backButton"></ion-back-button>
+      </ion-buttons>
+
       <strong>{{title}}</strong>
       
       <div class="admin">A D M I N</div>
