@@ -4,33 +4,33 @@
 <div class="d-flex-center">
 
 
-    <form [formGroup]="form" class="auth-form" [ngSubmit]="submit()"(keypress.enter)="submit()">
+    <form [formGroup]="form" class="auth-form" (ngSubmit)="submit()"(keypress.enter)="submit()">
     
         <app-custom-input 
         autocomplete="email"
         icon = "mail-outline"
-        [control]="form.controls.email"
+        [control]="form.controls.Email"
         type="email"
         label="Correo"
         ></app-custom-input>
     
-        <div class="valitators" *ngIf="form.controls.email.errors && form.controls.email.touched">
+        <div class="valitators" *ngIf="form.controls.Email.errors && form.controls.Email.touched">
 
-            <div *ngIf="form.controls.email.errors?.['required']"></div>
-            <div *ngIf="form.controls.email.errors?.['email']">Ingrese el Correo</div>
+            <div *ngIf="form.controls.Email.errors?.['required']"></div>
+            <div *ngIf="form.controls.Email.errors?.['email']">Ingrese el Correo</div>
 
         </div>
         
         <app-custom-input
-        [control]="form.controls.password"
+        [control]="form.controls.Password"
         icon = "lock-closed-outline"
         type="password"
         label="Contraseña"
         ></app-custom-input>
 
-        <div class="valitators" *ngIf="form.controls.password.errors && form.controls.password.touched"></div>
+        <div class="valitators" *ngIf="form.controls.Password.errors && form.controls.Password.touched">
 
-            <div *ngIf="form.controls.password.errors?.['required']">Ingrese la clave</div>
+            <div *ngIf="form.controls.Password.errors?.['required']">Ingrese la clave</div>
             
 
         </div>
@@ -39,7 +39,7 @@
             Entrar
         </ion-button>
         
-        </form>
+    </form>
     
         
 
