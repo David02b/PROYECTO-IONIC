@@ -86,9 +86,9 @@ export class AuthPage implements OnInit {
 
         this.utilsSvc.presentToast({
 
-          message: 'Bienvenido a tu lugar seguro $(user.name)',
+          message: 'Bienvenido a tu tienda de confianza ',
           duration:1500,
-          color: 'danger',
+          color: 'primary',
           position: 'middle',
           icon: 'person-circle-outline'
         })
