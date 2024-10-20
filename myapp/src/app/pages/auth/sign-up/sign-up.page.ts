@@ -14,8 +14,8 @@ export class SignUpPage implements OnInit {
 
   form = new FormGroup({
     uid: new FormControl(''),
-    email: new FormControl("", [Validators.required, Validators.email]),
-    password: new FormControl("", [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
   })
 
@@ -81,7 +81,7 @@ export class SignUpPage implements OnInit {
       const loading = await this.utilsSvc.loading();
       await loading.present();
 
-      let path= 'users/${uid}';
+      let path= `users/${uid}`;
       delete this.form.value.password;
 
       this.firebaseSVC.setDocument(path, this.form.value).then(async res =>{
