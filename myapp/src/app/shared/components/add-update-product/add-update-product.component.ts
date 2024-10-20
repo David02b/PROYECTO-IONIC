@@ -1,5 +1,6 @@
-import { Component, inject, Inject, Injector, OnInit } from '@angular/core';
+import { Component, inject, Inject, Injector, Input, OnInit } from '@angular/core';
 import { EmailValidator, FormControl, FormGroup, Validators } from '@angular/forms';
+import { product } from 'src/app/models/product.model';
 import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
@@ -12,6 +13,8 @@ import { UtilsService } from 'src/app/services/utils.service';
   styleUrls: ['./add-update-product.component.scss'],
 })
 export class AddUpdateProductComponent  implements OnInit {
+
+  @Input () product:product;
 
   form = new FormGroup({
     id: new FormControl(''),
@@ -44,11 +47,20 @@ export class AddUpdateProductComponent  implements OnInit {
   }
   
 
-  async submit() {
-
-    
+  submit(){
 
     if (this.form.valid) {
+
+      if(this.product) this.updateProduct();
+      else this.createProduct()
+
+    }
+
+  }
+
+  async createProduct() {
+
+    
 
       let path =`users/${this.user.uid}/products`
 
@@ -102,7 +114,70 @@ export class AddUpdateProductComponent  implements OnInit {
 
 
 
-    }
+  }
+
+  //=======ACTUALIZAR PRODUCTO==========//
+
+  async updateProduct() {
+
+    
+
+      let path =`users/${this.user.uid}/products/${this.product.id}`
+
+      const loading = await this.utilsSvc.loading();
+      await loading.present();
+
+      //========subir imagen y obtener url=============//
+
+      if(this.form.value.Image !== this.product.Image){
+
+      let dataUrl= this.form.value.Image;
+      let imagePath=await this.firebaseSVC.getFilePath(this.product.Image);
+      let imageUrl= await this.firebaseSVC.uploadImage(imagePath, dataUrl);
+      this.form.controls.Image.setValue(imageUrl);
+        
+      }
+      
+
+      delete this.form.value.id;
+
+      this.firebaseSVC.addDocument(path, this.form.value).then(async res =>{
+        
+
+        this.utilsSvc.dismissModal ({success : true});
+
+
+        this.utilsSvc.presentToast({
+
+          message: 'Producto creado',
+          duration:1500,
+          color: 'success',
+          position: 'middle',
+          icon: 'checkmark-circle-outline'
+        })
+
+
+      }).catch(error=> {
+
+        console.log(error);
+
+        this.utilsSvc.presentToast({
+
+          message: error.message,
+          duration:2500,
+          color: 'danger',
+          position: 'middle',
+          icon: 'aler-circle-outline'
+        })
+
+      }).finally(() =>{
+
+        loading.dismiss();
+
+      })
+
+
+
 
   }
 

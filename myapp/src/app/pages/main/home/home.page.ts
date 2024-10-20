@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { product } from 'src/app/models/product.model';
 import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -12,6 +12,8 @@ import { AddUpdateProductComponent } from 'src/app/shared/components/add-update-
 })
 export class HomePage implements OnInit {
 
+  
+  
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
 
@@ -61,12 +63,13 @@ export class HomePage implements OnInit {
   }
 
   //==========Agregar-actualizar productos============//
-  addUpdateProduct(){
+  addUpdateProduct(producto?: product){
 
     this.utilsSvc.presentModal({
 
       component:AddUpdateProductComponent,
-      cssClass: 'add-update-modal'
+      cssClass: 'add-update-modal',
+      componentProps:{ producto }
 
     })
   }

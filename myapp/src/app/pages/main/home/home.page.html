@@ -6,7 +6,7 @@
     <ion-item-sliding class="product-item" *ngFor="let p of products">
       <ion-item>
 
-        <ion-avatar>
+        <ion-avatar slot="start">
           <img [src]="p.Image" />
         </ion-avatar>
 
@@ -14,6 +14,16 @@
         <ion-label>
           
           <div class="name">{{p.name}}</div>
+          <div class="data">
+
+            <strong>Precio:</strong>{{p.price | currency: 'USD'}} <br>
+            <strong>Unidades vendidas:</strong>{{p.soldUnits}}
+
+          </div>
+
+          <ion-chip color="primary" mode="ios" outline="true">
+            <ion-label>Ganancias: {{p.price * p.soldUnits | currency: 'USD'}}</ion-label>
+          </ion-chip>
 
         </ion-label>
       </ion-item>
