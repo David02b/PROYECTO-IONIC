@@ -20,8 +20,8 @@ export class AddUpdateProductComponent  implements OnInit {
     id: new FormControl(''),
     Image: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    price: new FormControl('', [Validators.required, Validators.min(0)]),
-    soldUnits: new FormControl('', [Validators.required, Validators.min(0)]),
+    price: new FormControl(null, [Validators.required, Validators.min(0)]),
+    soldUnits: new FormControl(null, [Validators.required, Validators.min(0)]),
   })
 
   firebaseSVC = inject(FirebaseService);
@@ -31,9 +31,14 @@ export class AddUpdateProductComponent  implements OnInit {
 
 
   ngOnInit() {
-
     this.user = this.utilsSvc.getFromLocalStorage('user');
-
+    if (this.product) {
+      console.log('Editando producto:', this.product);
+      this.form.setValue(this.product); // Carga los datos del producto
+    } else {
+      console.log('Creando producto nuevo');
+      this.form.reset(); // Prepara el formulario para un producto nuevo
+    }
   }
 
         
@@ -47,14 +52,28 @@ export class AddUpdateProductComponent  implements OnInit {
   }
   
 
-  submit(){
-
+  submit() {
     if (this.form.valid) {
-
-      if(this.product) this.updateProduct();
-      else this.createProduct()
-
+      if (this.product) {
+        this.updateProduct(); // Editar producto existente
+      } else {
+        this.createProduct(); // Crear producto nuevo
+      }
+    } else {
+      this.utilsSvc.presentToast({
+        message: 'Por favor, completa todos los campos requeridos.',
+        duration: 2000,
+        color: 'warning',
+        position: 'top',
+      });
     }
+  }
+
+  //============CONVIERTE VALOES A NUMBER
+
+  setNumberInputs(){
+
+    let {soldUnits} = this.form.controls;
 
   }
 
@@ -127,12 +146,12 @@ export class AddUpdateProductComponent  implements OnInit {
       const loading = await this.utilsSvc.loading();
       await loading.present();
 
-      //========subir imagen y obtener url=============//
+      //========actualizar imagen y obtener url=============//
 
       if(this.form.value.Image !== this.product.Image){
 
       let dataUrl= this.form.value.Image;
-      let imagePath=await this.firebaseSVC.getFilePath(this.product.Image);
+      let imagePath = await this.firebaseSVC.getFilePath(this.product.Image);
       let imageUrl= await this.firebaseSVC.uploadImage(imagePath, dataUrl);
       this.form.controls.Image.setValue(imageUrl);
         
@@ -141,7 +160,7 @@ export class AddUpdateProductComponent  implements OnInit {
 
       delete this.form.value.id;
 
-      this.firebaseSVC.addDocument(path, this.form.value).then(async res =>{
+      this.firebaseSVC.UpdateDocument(path, this.form.value).then(async res =>{
         
 
         this.utilsSvc.dismissModal ({success : true});
@@ -149,7 +168,7 @@ export class AddUpdateProductComponent  implements OnInit {
 
         this.utilsSvc.presentToast({
 
-          message: 'Producto creado',
+          message: 'Producto actualizado exitosamente',
           duration:1500,
           color: 'success',
           position: 'middle',

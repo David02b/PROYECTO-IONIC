@@ -3,10 +3,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
 import { User } from '../models/user.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, query } from '@angular/fire/firestore'
+import { getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, query,updateDoc, deleteDoc } from '@angular/fire/firestore'
 import { UtilsService } from './utils.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { getStorage, uploadString, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, uploadString, ref, getDownloadURL, deleteObject } from "firebase/storage";
 
 
 @Injectable({
@@ -78,6 +78,18 @@ export class FirebaseService {
     return setDoc(doc(getFirestore(), path), data);
   }
 
+   //================ACTUALIZAR DOCUMENTO=================//
+
+   UpdateDocument(path: string, data: any) {
+    return updateDoc(doc(getFirestore(), path), data);
+  }
+
+  //================ELIMINAR DOCUMENTO=================//
+
+  deleteDocument(path: string) {
+    return deleteDoc(doc(getFirestore(), path));
+  }
+
   //================OBTENER DOCUMENTO===========//
 
   async getDocument(path: string) {
@@ -123,6 +135,12 @@ export class FirebaseService {
     return ref(getStorage(),url).fullPath
 
 
+  }
+  //===============ELIMINAR ARCHIVOS=============//
+
+  deleteFile(path: string){
+
+    return deleteObject(ref(getStorage(),path));
   }
 
 
