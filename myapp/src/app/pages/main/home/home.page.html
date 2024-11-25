@@ -1,6 +1,23 @@
-<app-header title="Inicio"></app-header>
+<app-header [showMenu]="true" title="Inicio"></app-header>
 
 <ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card mode="ios" color="secondary" class="d-flex-center ion-text-center" *ngIf="!loading && products.length">
+    <div>
+      <h5>{{products.length}}</h5>
+      <p>Productos</p>
+    </div>
+    <div>
+      <h5>{{getProfits() | currency: 'USD'}}</h5>
+      <p>Ganancias</p>
+    </div>
+    
+  </ion-card>
+
 <!--============producto===================-->
   <ion-list *ngIf="!loading">
     <ion-item-sliding class="product-item" *ngFor="let p of products">
@@ -65,6 +82,12 @@
   
    
   </ion-list>
+
+  <!--======= SIN PRODUCTOS DISPONIBLES=========-->
+  <div *ngIf="!loading && !products.length" class="empty">
+    <ion-icon name="shield-outline"></ion-icon>
+    <h3>no hay productos DISPONIBLES</h3>
+  </div>
 
   <!--AGREGAR PRODUCTO-->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
